@@ -3,8 +3,7 @@ const gameEngine = require('./game-engine.js')
 
 const onPlayerChoice = (event) => {
   const choice = event.target
-  // console.log(gameEngine.turnCounter())
-  $(choice).html(gameEngine.turnCounter())
+  $(choice).html(gameEngine.turnCounter(choice))
 }
 
 module.exports = {

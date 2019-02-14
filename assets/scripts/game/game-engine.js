@@ -1,10 +1,14 @@
 
 let turn = 1
 
-const turnCounter = () => {
+const turnCounter = (playerChoice) => {
   const playerOne = 'X'
   const playerTwo = 'O'
-  if (turn === 10) {
+
+  if ($(playerChoice).text() === 'X' || $(playerChoice).text() === 'O') {
+    return console.log('shit!')
+  }
+  if (turn === 9) {
     console.log('game over. reset board')
     turn = 1
     return
