@@ -1,1 +1,29 @@
 @import '~bootstrap/scss/bootstrap';
+
+$alt-color: $cyan;
+$body-bg-color: $gray-200;
+$font-color: $light;
+
+body {
+  background-color: $body-bg-color;
+}
+
+.alt-color {
+  background-color: $alt-color;
+}
+
+.box {
+  align-items: center;
+  background-color: $secondary;
+  border: 1px solid $white;
+  color: $font-color;
+  display: flex;
+  height: 186px;
+  justify-content: center;
+}
+
+.game-board {
+  margin: 0 auto;
+  max-height: 560px;
+  max-width: 560px;
+}
