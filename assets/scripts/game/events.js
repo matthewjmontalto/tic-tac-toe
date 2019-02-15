@@ -4,9 +4,15 @@ const gameEngine = require('./game-engine.js')
 const onPlayerChoice = (event) => {
   const playerChoice = event.target
   $(playerChoice).html(gameEngine.turnCounter(playerChoice))
-  gameEngine.updateCurrentGame(playerChoice)
+  gameEngine.checkForWinner()
+  // gameEngine.updateCurrentGame(playerChoice)
+}
+
+const addHandlers = () => {
+  $('.game-space').on('click', onPlayerChoice)
 }
 
 module.exports = {
-  onPlayerChoice: onPlayerChoice
+  onPlayerChoice: onPlayerChoice,
+  addHandlers: addHandlers
 }

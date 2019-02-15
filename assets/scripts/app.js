@@ -8,5 +8,5 @@ const gameEvents = require('./game/events')
 // require('./example')
 
 $(() => {
-  $('.game-space').on('click', gameEvents.onPlayerChoice)
+  gameEvents.addHandlers()
 })
