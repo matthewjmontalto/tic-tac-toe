@@ -9,7 +9,7 @@ const turnCounter = (playerChoice) => {
   if ($(playerChoice).text() === 'X' || $(playerChoice).text() === 'O') {
     return console.log('shit!')
   }
-  if (turn === 10) {
+  if (turn === 9) {
     console.log('game over. reset board')
     turn = 1
     return
@@ -67,7 +67,7 @@ const checkForWinner = () => {
     (gameBoard[2] === 'O' && gameBoard[4] === 'O' && gameBoard[6] === 'O')
   ) {
     return console.log('Winner!')
-  } else if (turn >= 9) {
+  } else if (turn === 9) {
     console.log('Tie!')
   } else {
     console.log('Next Turn!')
