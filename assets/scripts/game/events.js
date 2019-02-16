@@ -1,11 +1,16 @@
 const gameEngine = require('./game-engine.js')
+const gameUi = require('./ui.js')
+const storage = require('../store.js')
 // need to know which
 
 const onPlayerChoice = (event) => {
   const playerChoice = event.target
-  $(playerChoice).html(gameEngine.turnCounter(playerChoice))
-  gameEngine.checkForWinner()
-  // gameEngine.updateCurrentGame(playerChoice)
+
+  storage.store.currentTurn = gameEngine.turnCounter(playerChoice)
+
+  gameEngine.checkForWinner(storage.store.currentTurn)
+
+  gameUi.drawTurn(playerChoice)
 }
 
 const addHandlers = () => {
