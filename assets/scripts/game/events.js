@@ -5,15 +5,17 @@ const api = require('./api.js')
 const storage = require('../store.js')
 // need to know which
 
-// calls functions relating to local game play
+// calls functions relating to game play
 const onPlayerChoice = (event) => {
   const playerChoice = event.target
 
-  storage.store.currentTurn = gameEngine.turnCounter(playerChoice)
+  storage.currentTurn = gameEngine.turnCounter(playerChoice)
+  storage.chosenSpace = $(playerChoice).data('space')
 
-  gameEngine.checkForWinner(storage.store.currentTurn)
-
-  gameUi.drawTurn(playerChoice)
+  gameEngine.checkForWinner(storage.currentTurn)
+  api.updateGame()
+    .then(gameUi.drawTurn(playerChoice))
+    .catch(gameUi.updateFailure) // Need a way to prevent turnCounter from being called
 }
 
 const onSignUp = (event) => {
@@ -73,13 +75,17 @@ const onSignOut = (event) => {
     .catch(gameUi.signOutFailure)
 }
 
-const onResetGame = (event) => {
+const onNewGame = (event) => {
   event.preventDefault()
 
   // create new game
-
+  api.newGame()
+    .then(gameUi.newGameSuccess)
+    // likely need to store api return object
+    .catch(gameUi.newGameFailure)
   // reset turn counter
 
+  // reset game board ui on success
   $('.game-space').html('')
 }
 
@@ -88,7 +94,7 @@ const addHandlers = () => {
   $('#sign-up-form').on('submit', onSignUp)
   $('#change-password-form').on('submit', onChangePassword)
   $('#sign-out-button').on('click', onSignOut)
-  $('#reset-game').on('click', onResetGame)
+  $('#new-game-button').on('click', onNewGame)
 }
 
 module.exports = {

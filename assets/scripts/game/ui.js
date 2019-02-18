@@ -3,7 +3,7 @@
 const storage = require('../store.js')
 
 const drawTurn = function (playerChoice) {
-  $(playerChoice).html(storage.store.currentTurn)
+  $(playerChoice).html(storage.currentTurn)
 }
 
 const gameProgress = function (selector, text) {
@@ -14,7 +14,8 @@ const removeListener = function (selector) {
   $(selector).off('click')
 }
 
-const signUpSuccess = () => {
+const signUpSuccess = (responseData) => {
+  storage.user = responseData.user
   $('#sign-up-form').hide()
   $('#account-status').text('Welcome!')
 }
@@ -24,7 +25,7 @@ const signUpFailure = () => {
 }
 
 const signInSuccess = (responseData) => {
-  gameProgress('#user-feedback', 'X goes first.')
+  gameProgress('#user-feedback', 'Press "New Game" to begin')
 
   storage.user = responseData.user
   console.log(storage.user)
@@ -53,6 +54,16 @@ const signOutFailure = () => {
   gameProgress('#user-feedback', 'Failed to sign out. Try again.')
 }
 
+const newGameSuccess = (responseData) => {
+  storage.newGame = responseData
+  console.log('new game is ', storage.newGame.game)
+  gameProgress('#user-feedback', 'X goes first.')
+}
+
+const newGameFailure = (responseData) => {
+  gameProgress('#user-feedback', 'Failed to start new game. Try again')
+}
+
 module.exports = {
   drawTurn: drawTurn,
   gameProgress: gameProgress,
@@ -64,5 +75,7 @@ module.exports = {
   changePasswordSuccess: changePasswordSuccess,
   changePasswordFailure: changePasswordFailure,
   signOutSuccess: signOutSuccess,
-  signOutFailure: signOutFailure
+  signOutFailure: signOutFailure,
+  newGameSuccess: newGameSuccess,
+  newGameFailure: newGameFailure
 }

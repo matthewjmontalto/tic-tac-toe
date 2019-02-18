@@ -40,9 +40,41 @@ const signOut = () => {
   })
 }
 
+const newGame = () => {
+  return $.ajax({
+    method: 'POST',
+    url: config.apiUrl + '/games',
+    headers: {
+      Authorization: 'Token token=' + storage.user.token
+    },
+    data: {}
+  })
+}
+
+const updateGame = () => {
+  return $.ajax({
+    method: 'PATCH',
+    url: config.apiUrl + '/games/' + storage.newGame.game.id,
+    headers: {
+      Authorization: 'Token token=' + storage.user.token
+    },
+    data: {
+      game: {
+        cell: {
+          index: storage.chosenSpace,
+          value: storage.currentTurn
+        },
+        over: storage.newGame.over
+      }
+    }
+  })
+}
+
 module.exports = {
   signUp: signUp,
   signIn: signIn,
   changePassword: changePassword,
-  signOut: signOut
+  signOut: signOut,
+  newGame: newGame,
+  updateGame: updateGame
 }
