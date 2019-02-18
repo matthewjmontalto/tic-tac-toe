@@ -73,11 +73,22 @@ const onSignOut = (event) => {
     .catch(gameUi.signOutFailure)
 }
 
+const onResetGame = (event) => {
+  event.preventDefault()
+
+  // create new game
+
+  // reset turn counter
+
+  $('.game-space').html('')
+}
+
 const addHandlers = () => {
   $('#sign-in-form').on('submit', onSignIn)
   $('#sign-up-form').on('submit', onSignUp)
   $('#change-password-form').on('submit', onChangePassword)
   $('#sign-out-button').on('click', onSignOut)
+  $('#reset-game').on('click', onResetGame)
 }
 
 module.exports = {
