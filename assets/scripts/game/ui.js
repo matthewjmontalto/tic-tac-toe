@@ -27,6 +27,8 @@ const signUpFailure = () => {
 }
 
 const signInSuccess = (responseData) => {
+  $('#sign-up-button, #sign-in-button, #sign-in-form').addClass('hidden')
+  $('#change-password-button, #sign-out-button, #new-game-button, #game-stats-button').removeClass('hidden')
   gameProgress('#user-feedback', 'Press "New Game" to begin')
   $('.game-space').html('')
   storage.user = responseData.user
@@ -46,6 +48,8 @@ const changePasswordFailure = () => {
 }
 
 const signOutSuccess = () => {
+  $('#sign-up-button, #sign-in-button, #sign-in-form').removeClass('hidden')
+  $('#change-password-button, #sign-out-button, #new-game-button, #game-stats-button').addClass('hidden')
   $('#user-feedback').text('Sign up or sign in to play!')
   $('.game-space').html('')
   $('#sign-up-form').show()

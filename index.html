@@ -20,15 +20,15 @@
             <form class="form-inline my-2" id="sign-in-form" action="">
               <input class="form-control mr-2" name="credentials[email]" placeholder="email" type="email">
               <input class="form-control mr-2" name="credentials[password]" placeholder="password" type="password">
-              <button class="btn btn-primary mr-2" type="submit">Sign In</button>
+              <button class="btn btn-primary mr-2" id="sign-in-button" type="submit">Sign In</button>
             </form>
-            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#signUpModal">
+            <button type="button" class="btn btn-primary mr-2" id="sign-up-button" data-toggle="modal" data-target="#signUpModal">
               Sign Up
             </button>
-            <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#changePasswordModal">
+            <button type="button" class="btn btn-primary mr-2 hidden" id="change-password-button" data-toggle="modal" data-target="#changePasswordModal">
               Change Password
             </button>
-            <button id="sign-out-button" class="btn btn-secondary mr 2">Sign Out</button>
+            <button id="sign-out-button" class="btn btn-secondary mr 2 hidden">Sign Out</button>
           </nav>
           <!-- Sign Up Modal -->
           <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="signUpModalLabel" aria-hidden="true">
@@ -102,8 +102,8 @@
               <div class="box col-4 game-space" data-space="8"></div>
             </div>
             <div class="row">
-              <button class="btn btn-primary" id="new-game-button">New Game</button>
-              <button class="btn btn-primary" id="game-stats-button">Game History</button>
+              <button class="btn btn-primary hidden" id="new-game-button">New Game</button>
+              <button class="btn btn-primary hidden" id="game-stats-button">Game History</button>
             </div>
           </div>
         </section>
