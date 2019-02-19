@@ -15,18 +15,20 @@ const removeListener = function (selector) {
 }
 
 const signUpSuccess = (responseData) => {
-  storage.user = responseData.user
-  $('#sign-up-form').hide() // Not currently effective
+  // storage.user = responseData.user
+  $('#sign-up-form').hide()
   $('#account-status').text('Welcome!')
+  setTimeout(() => $('#account-status').text(''), 5000)
 }
 
 const signUpFailure = () => {
   $('#account-status').text('Could not create account. Try again.')
+  setTimeout(() => $('#account-status').text(''), 5000)
 }
 
 const signInSuccess = (responseData) => {
   gameProgress('#user-feedback', 'Press "New Game" to begin')
-
+  $('.game-space').html('')
   storage.user = responseData.user
   console.log(storage.user)
 }
@@ -46,6 +48,7 @@ const changePasswordFailure = () => {
 const signOutSuccess = () => {
   $('#user-feedback').text('Sign up or sign in to play!')
   $('.game-space').html('')
+  $('#sign-up-form').show()
   // prevents interaction with game
   removeListener('.game-space')
 }

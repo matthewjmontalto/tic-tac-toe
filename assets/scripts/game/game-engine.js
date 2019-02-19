@@ -1,9 +1,6 @@
 const storage = require('../store.js')
 const ui = require('./ui.js')
 
-const gameBoard = ['', '', '', '', '', '', '', '', '']
-let turn = gameBoard.length
-
 const turnCounter = (playerChoice) => {
   const playerOne = 'X'
   const playerTwo = 'O'
@@ -14,31 +11,30 @@ const turnCounter = (playerChoice) => {
     ui.gameProgress('#user-feedback', 'Invalid Space!')
     return
   }
-  if (turn === 1) {
+  if (storage.turn === 1) {
     storage.newGame.over = true
     ui.gameProgress('#user-feedback', 'Tie!')
     ui.removeListener('.game-space')
-    turn = gameBoard.length
+    storage.turn = storage.gameBoard.length
     return
   }
-  if (turn % 2 !== 0) {
-    turn -= 1
-    gameBoard[chosenSpace] = playerOne
+  if (storage.turn % 2 !== 0) {
+    storage.turn -= 1
+    storage.gameBoard[chosenSpace] = playerOne
     ui.gameProgress('#user-feedback', `O's turn!`)
     return playerOne
   } else {
-    turn -= 1
-    gameBoard[chosenSpace] = playerTwo
+    storage.turn -= 1
+    storage.gameBoard[chosenSpace] = playerTwo
     ui.gameProgress('#user-feedback', `X's turn!`)
     return playerTwo
   }
 }
-// MUST UPDATE TO REFERENCE API RESPONSE DATA GAME ARRAY
-// OR RESET gameBoard WHEN NEW GAME IS CLICKED
+
 const checkForWinner = (player) => {
   if (
-    (gameBoard[0] === 'X' && gameBoard[1] === 'X' && gameBoard[2] === 'X') ||
-    (gameBoard[0] === 'O' && gameBoard[1] === 'O' && gameBoard[2] === 'O')
+    (storage.gameBoard[0] === 'X' && storage.gameBoard[1] === 'X' && storage.gameBoard[2] === 'X') ||
+    (storage.gameBoard[0] === 'O' && storage.gameBoard[1] === 'O' && storage.gameBoard[2] === 'O')
   ) {
     // pass true to newGame object over
     storage.newGame.over = true
@@ -46,50 +42,50 @@ const checkForWinner = (player) => {
     // turn off event listener
     ui.removeListener('.game-space')
   } else if (
-    (gameBoard[3] === 'X' && gameBoard[4] === 'X' && gameBoard[5] === 'X') ||
-    (gameBoard[3] === 'O' && gameBoard[4] === 'O' && gameBoard[5] === 'O')
+    (storage.gameBoard[3] === 'X' && storage.gameBoard[4] === 'X' && storage.gameBoard[5] === 'X') ||
+    (storage.gameBoard[3] === 'O' && storage.gameBoard[4] === 'O' && storage.gameBoard[5] === 'O')
   ) {
     storage.newGame.over = true
     ui.gameProgress('#user-feedback', `${player} is the winner!`)
     ui.removeListener('.game-space')
   } else if (
-    (gameBoard[6] === 'X' && gameBoard[7] === 'X' && gameBoard[8] === 'X') ||
-    (gameBoard[6] === 'O' && gameBoard[7] === 'O' && gameBoard[8] === 'O')
+    (storage.gameBoard[6] === 'X' && storage.gameBoard[7] === 'X' && storage.gameBoard[8] === 'X') ||
+    (storage.gameBoard[6] === 'O' && storage.gameBoard[7] === 'O' && storage.gameBoard[8] === 'O')
   ) {
     storage.newGame.over = true
     ui.gameProgress('#user-feedback', `${player} is the winner!`)
     ui.removeListener('.game-space')
   } else if (
-    (gameBoard[0] === 'X' && gameBoard[3] === 'X' && gameBoard[6] === 'X') ||
-    (gameBoard[0] === 'O' && gameBoard[3] === 'O' && gameBoard[6] === 'O')
+    (storage.gameBoard[0] === 'X' && storage.gameBoard[3] === 'X' && storage.gameBoard[6] === 'X') ||
+    (storage.gameBoard[0] === 'O' && storage.gameBoard[3] === 'O' && storage.gameBoard[6] === 'O')
   ) {
     storage.newGame.over = true
     ui.gameProgress('#user-feedback', `${player} is the winner!`)
     ui.removeListener('.game-space')
   } else if (
-    (gameBoard[1] === 'X' && gameBoard[4] === 'X' && gameBoard[7] === 'X') ||
-    (gameBoard[1] === 'O' && gameBoard[4] === 'O' && gameBoard[7] === 'O')
+    (storage.gameBoard[1] === 'X' && storage.gameBoard[4] === 'X' && storage.gameBoard[7] === 'X') ||
+    (storage.gameBoard[1] === 'O' && storage.gameBoard[4] === 'O' && storage.gameBoard[7] === 'O')
   ) {
     storage.newGame.over = true
     ui.gameProgress('#user-feedback', `${player} is the winner!`)
     ui.removeListener('.game-space')
   } else if (
-    (gameBoard[2] === 'X' && gameBoard[5] === 'X' && gameBoard[8] === 'X') ||
-    (gameBoard[2] === 'O' && gameBoard[5] === 'O' && gameBoard[8] === 'O')
+    (storage.gameBoard[2] === 'X' && storage.gameBoard[5] === 'X' && storage.gameBoard[8] === 'X') ||
+    (storage.gameBoard[2] === 'O' && storage.gameBoard[5] === 'O' && storage.gameBoard[8] === 'O')
   ) {
     storage.newGame.over = true
     ui.gameProgress('#user-feedback', `${player} is the winner!`)
     ui.removeListener('.game-space')
   } else if (
-    (gameBoard[0] === 'X' && gameBoard[4] === 'X' && gameBoard[8] === 'X') ||
-    (gameBoard[0] === 'O' && gameBoard[4] === 'O' && gameBoard[8] === 'O')
+    (storage.gameBoard[0] === 'X' && storage.gameBoard[4] === 'X' && storage.gameBoard[8] === 'X') ||
+    (storage.gameBoard[0] === 'O' && storage.gameBoard[4] === 'O' && storage.gameBoard[8] === 'O')
   ) {
     storage.newGame.over = true
     ui.gameProgress('#user-feedback', `${player} is the winner!`)
     ui.removeListener('.game-space')
   } else if (
-    (gameBoard[2] === 'X' && gameBoard[4] === 'X' && gameBoard[6] === 'X') ||
-    (gameBoard[2] === 'O' && gameBoard[4] === 'O' && gameBoard[6] === 'O')
+    (storage.gameBoard[2] === 'X' && storage.gameBoard[4] === 'X' && storage.gameBoard[6] === 'X') ||
+    (storage.gameBoard[2] === 'O' && storage.gameBoard[4] === 'O' && storage.gameBoard[6] === 'O')
   ) {
     storage.newGame.over = true
     ui.gameProgress('#user-feedback', `${player} is the winner!`)
@@ -98,18 +94,8 @@ const checkForWinner = (player) => {
   }
 }
 
-// const updateCurrentGame = (playerChoice) => {
-// when player picks space, pass player value to gameBoard array
-
-// need a way to capture value in space data attribute
-
-// need a way to match playerChoice with gameBoard array index
-//   console.log(gameBoard)
-// }
-
 module.exports = {
   turnCounter: turnCounter,
-  checkForWinner: checkForWinner,
-  gameBoard: gameBoard,
-  turn: turn
+  checkForWinner: checkForWinner
+
 }

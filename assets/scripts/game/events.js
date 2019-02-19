@@ -17,25 +17,6 @@ const onPlayerChoice = (event) => {
     .then(gameUi.drawTurn(playerChoice))
     .catch(gameUi.updateFailure) // Need a way to prevent turnCounter from being called
 }
-
-const onSignUp = (event) => {
-  event.preventDefault()
-
-  const form = event.target
-  const formData = getFormFields(form)
-
-  console.log(formData)
-
-  api.signUp(formData)
-    .then(gameUi.signUpSuccess)
-    .catch(gameUi.signUpFailure)
-
-  // listens for game interaction. Should be disabled until sign-in/sign-up
-  $('.game-space').on('click', onPlayerChoice)
-  // resets form fields
-  $('#sign-up-form').trigger('reset')
-}
-
 const onSignIn = (event) => {
   event.preventDefault()
 
@@ -48,6 +29,26 @@ const onSignIn = (event) => {
 
   // resets form fields
   $('#sign-in-form').trigger('reset')
+}
+
+const onSignUp = (event) => {
+  event.preventDefault()
+
+  const form = event.target
+  const formData = getFormFields(form)
+
+  console.log(formData)
+
+  api.signUp(formData)
+    .then(gameUi.signUpSuccess)
+    .then(() => {
+      onSignIn(event)
+    })
+    .then(() => {
+      // resets form fields
+      $('#sign-up-form').trigger('reset')
+    })
+    .catch(gameUi.signUpFailure)
 }
 
 const onChangePassword = (event) => {
@@ -74,10 +75,10 @@ const onSignOut = (event) => {
 
 const onNewGame = (event) => {
   event.preventDefault()
-  gameEngine.gameBoard = ['', '', '', '', '', '', '', '', '']
-  console.log(gameEngine.gameBoard)
-  gameEngine.turn = gameEngine.gameBoard.length
-  console.log(gameEngine.turn)
+  storage.gameBoard = ['', '', '', '', '', '', '', '', '']
+  console.log(storage.gameBoard)
+  storage.turn = storage.gameBoard.length
+  console.log(storage.turn)
   // create new game
   api.newGame()
     .then(gameUi.newGameSuccess).then(() => {
