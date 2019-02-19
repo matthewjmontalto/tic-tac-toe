@@ -70,11 +70,22 @@ const updateGame = () => {
   })
 }
 
+const listGames = (player) => {
+  return $.ajax({
+    method: 'GET',
+    url: config.apiUrl + '/games?over=true',
+    headers: {
+      Authorization: 'Token token=' + storage.user.token
+    }
+  })
+}
+
 module.exports = {
   signUp: signUp,
   signIn: signIn,
   changePassword: changePassword,
   signOut: signOut,
   newGame: newGame,
-  updateGame: updateGame
+  updateGame: updateGame,
+  listGames: listGames
 }

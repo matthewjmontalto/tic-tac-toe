@@ -15,6 +15,7 @@ const turnCounter = (playerChoice) => {
     return
   }
   if (turn === 1) {
+    storage.newGame.over = true
     ui.gameProgress('#user-feedback', 'Tie!')
     ui.removeListener('.game-space')
     turn = gameBoard.length
@@ -32,7 +33,8 @@ const turnCounter = (playerChoice) => {
     return playerTwo
   }
 }
-
+// MUST UPDATE TO REFERENCE API RESPONSE DATA GAME ARRAY
+// OR RESET gameBoard WHEN NEW GAME IS CLICKED
 const checkForWinner = (player) => {
   if (
     (gameBoard[0] === 'X' && gameBoard[1] === 'X' && gameBoard[2] === 'X') ||
@@ -107,5 +109,7 @@ const checkForWinner = (player) => {
 
 module.exports = {
   turnCounter: turnCounter,
-  checkForWinner: checkForWinner
+  checkForWinner: checkForWinner,
+  gameBoard: gameBoard,
+  turn: turn
 }

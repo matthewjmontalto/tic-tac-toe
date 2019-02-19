@@ -48,9 +48,6 @@ const onSignIn = (event) => {
 
   // resets form fields
   $('#sign-in-form').trigger('reset')
-
-  // listens for game interaction. Should be disabled until sign-in/sign-up
-  $('.game-space').on('click', onPlayerChoice)
 }
 
 const onChangePassword = (event) => {
@@ -77,10 +74,15 @@ const onSignOut = (event) => {
 
 const onNewGame = (event) => {
   event.preventDefault()
-
+  gameEngine.gameBoard = ['', '', '', '', '', '', '', '', '']
+  console.log(gameEngine.gameBoard)
+  gameEngine.turn = gameEngine.gameBoard.length
+  console.log(gameEngine.turn)
   // create new game
   api.newGame()
-    .then(gameUi.newGameSuccess)
+    .then(gameUi.newGameSuccess).then(() => {
+      $('.game-space').on('click', onPlayerChoice)
+    })
     // likely need to store api return object
     .catch(gameUi.newGameFailure)
   // reset turn counter
@@ -89,12 +91,21 @@ const onNewGame = (event) => {
   $('.game-space').html('')
 }
 
+const onGetGames = (event) => {
+  event.preventDefault()
+
+  api.listGames()
+    .then(gameUi.onGameHistorySuccess)
+    .catch(gameUi.onGameHistoryFailure)
+}
+
 const addHandlers = () => {
   $('#sign-in-form').on('submit', onSignIn)
   $('#sign-up-form').on('submit', onSignUp)
   $('#change-password-form').on('submit', onChangePassword)
   $('#sign-out-button').on('click', onSignOut)
   $('#new-game-button').on('click', onNewGame)
+  $('#game-stats-button').on('click', onGetGames)
 }
 
 module.exports = {

@@ -16,7 +16,7 @@ const removeListener = function (selector) {
 
 const signUpSuccess = (responseData) => {
   storage.user = responseData.user
-  $('#sign-up-form').hide()
+  $('#sign-up-form').hide() // Not currently effective
   $('#account-status').text('Welcome!')
 }
 
@@ -64,6 +64,14 @@ const newGameFailure = (responseData) => {
   gameProgress('#user-feedback', 'Failed to start new game. Try again')
 }
 
+const onGameHistorySuccess = (responseData) => {
+  const gamesList = responseData.games
+  console.log(gamesList)
+  $('#user-feedback').text(`Total games played to date: ${gamesList.length}`)
+
+  setTimeout(() => $('#user-feedback').text(''), 5000)
+}
+
 module.exports = {
   drawTurn: drawTurn,
   gameProgress: gameProgress,
@@ -77,5 +85,6 @@ module.exports = {
   signOutSuccess: signOutSuccess,
   signOutFailure: signOutFailure,
   newGameSuccess: newGameSuccess,
-  newGameFailure: newGameFailure
+  newGameFailure: newGameFailure,
+  onGameHistorySuccess: onGameHistorySuccess
 }
