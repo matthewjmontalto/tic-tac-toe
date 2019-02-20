@@ -6,7 +6,7 @@ const turnCounter = (playerChoice) => {
   const playerTwo = 'O'
 
   const chosenSpace = $(playerChoice).data('space')
-
+  // Wrap this around event handler.
   if ($(playerChoice).text() === 'X' || $(playerChoice).text() === 'O') {
     ui.gameProgress('#user-feedback', 'Invalid Space!')
     return
@@ -30,6 +30,10 @@ const turnCounter = (playerChoice) => {
     return playerTwo
   }
 }
+
+// const revertTurn = () => {
+//
+// }
 
 const checkForWinner = (player) => {
   if (

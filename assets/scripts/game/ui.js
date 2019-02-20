@@ -3,7 +3,11 @@
 const storage = require('../store.js')
 
 const drawTurn = function (playerChoice) {
-  $(playerChoice).html(storage.currentTurn)
+  $(playerChoice).html(storage.gameObject.currentPlayer)
+}
+
+const updateFailure = () => {
+  $('#user-feedback').text('Failed to record turn. Play again.')
 }
 
 const gameProgress = function (selector, text) {
@@ -62,8 +66,10 @@ const signOutFailure = () => {
 }
 
 const newGameSuccess = (responseData) => {
-  storage.newGame = responseData
-  console.log('new game is ', storage.newGame.game)
+  storage.gameObject.game = responseData.game.cells
+  storage.gameObject.id = responseData.game.id
+  storage.gameObject.over = responseData.game.over
+  console.log('new game is ', storage.gameObject.over)
   gameProgress('#user-feedback', 'X goes first.')
 }
 
@@ -81,6 +87,7 @@ const onGameHistorySuccess = (responseData) => {
 
 module.exports = {
   drawTurn: drawTurn,
+  updateFailure: updateFailure,
   gameProgress: gameProgress,
   removeListener: removeListener,
   signUpSuccess: signUpSuccess,

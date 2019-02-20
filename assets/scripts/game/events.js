@@ -1,5 +1,5 @@
 const getFormFields = require('../../../lib/get-form-fields.js')
-const gameEngine = require('./game-engine.js')
+const gameEngine = require('./game-engine_refac.js')
 const gameUi = require('./ui.js')
 const api = require('./api.js')
 const storage = require('../store.js')
@@ -9,12 +9,34 @@ const storage = require('../store.js')
 const onPlayerChoice = (event) => {
   const playerChoice = event.target
 
-  storage.currentTurn = gameEngine.turnCounter(playerChoice)
-  storage.chosenSpace = $(playerChoice).data('space')
+  if ($(playerChoice).text() !== '') {
+    gameUi.gameProgress('#user-feedback', 'Invalid Space!')
+    return
+  }
+  // storage.currentTurn = gameEngine.turnCounter(playerChoice)
+  storage.gameObject.playerChoice = $(playerChoice).data('space')
 
-  gameEngine.checkForWinner(storage.currentTurn)
+  // gameEngine.checkForWinner(storage.currentTurn)
   api.updateGame()
-    .then(gameUi.drawTurn(playerChoice))
+    .then((responseData) => {
+      console.log('update success', responseData)
+      // overwrite game array with response array
+      gameEngine.gameProgress(responseData)
+      // draw turn on game board
+      gameUi.drawTurn(playerChoice)
+      // check for winner
+      gameEngine.checkForWinner()
+      if (storage.gameObject.over) {
+        return
+      }
+      // call function that filters game array and determine # of remaining spaces
+      if (gameEngine.remainingTurns() === 0) {
+        gameUi.gameProgress('#user-feedback', 'Tie!')
+        return
+      }
+      // switch player turn
+      gameEngine.nextTurn()
+    })
     .catch(gameUi.updateFailure) // Need a way to prevent turnCounter from being called
 }
 const onSignIn = (event) => {
@@ -75,19 +97,17 @@ const onSignOut = (event) => {
 
 const onNewGame = (event) => {
   event.preventDefault()
-  storage.gameBoard = ['', '', '', '', '', '', '', '', '']
-  console.log(storage.gameBoard)
-  storage.turn = storage.gameBoard.length
-  console.log(storage.turn)
+  storage.gameObject.currentPlayer = 'X'
+
   // create new game
   api.newGame()
-    .then(gameUi.newGameSuccess).then(() => {
+    .then(gameUi.newGameSuccess)
+    .then(() => {
+      $('.game-space').off('click')
       $('.game-space').on('click', onPlayerChoice)
     })
     // likely need to store api return object
     .catch(gameUi.newGameFailure)
-  // reset turn counter
-
   // reset game board ui on success
   $('.game-space').html('')
 }

@@ -51,20 +51,20 @@ const newGame = () => {
   })
 }
 
-const updateGame = () => {
+const updateGame = (gameData) => {
   return $.ajax({
     method: 'PATCH',
-    url: config.apiUrl + '/games/' + storage.newGame.game.id,
+    url: config.apiUrl + '/games/' + storage.gameObject.id,
     headers: {
       Authorization: 'Token token=' + storage.user.token
     },
     data: {
       game: {
         cell: {
-          index: storage.chosenSpace,
-          value: storage.currentTurn
+          index: storage.gameObject.playerChoice,
+          value: storage.gameObject.currentPlayer
         },
-        over: storage.newGame.over
+        over: storage.gameObject.game.over
       }
     }
   })
