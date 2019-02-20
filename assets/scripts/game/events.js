@@ -1,43 +1,40 @@
+'use strict'
+
 const getFormFields = require('../../../lib/get-form-fields.js')
 const gameEngine = require('./game-engine_refac.js')
 const gameUi = require('./ui.js')
 const api = require('./api.js')
 const storage = require('../store.js')
-// need to know which
 
 // calls functions relating to game play
 const onPlayerChoice = (event) => {
   const playerChoice = event.target
 
-  if ($(playerChoice).text() !== '') {
+  if ($(playerChoice).text() === '') {
+    api.updateGame($(playerChoice).data('space'))
+      .then((responseData) => {
+        // overwrite game array with response array
+        gameEngine.gameProgress(responseData)
+        // draw turn on game board
+        gameUi.drawTurn(playerChoice)
+        // check for winner
+        gameEngine.checkForWinner()
+        if (storage.gameObject.over) {
+          return
+        }
+        // call function that filters game array and determine # of remaining spaces
+        if (gameEngine.remainingTurns() === 0) {
+          gameUi.gameProgress('#user-feedback', 'Tie!')
+          $('.game-space').off('click')
+          return
+        }
+        // switch player turn
+        gameEngine.nextTurn()
+      })
+      .catch(gameUi.updateFailure)
+  } else {
     gameUi.gameProgress('#user-feedback', 'Invalid Space!')
-    return
   }
-  // storage.currentTurn = gameEngine.turnCounter(playerChoice)
-  storage.gameObject.playerChoice = $(playerChoice).data('space')
-
-  // gameEngine.checkForWinner(storage.currentTurn)
-  api.updateGame()
-    .then((responseData) => {
-      console.log('update success', responseData)
-      // overwrite game array with response array
-      gameEngine.gameProgress(responseData)
-      // draw turn on game board
-      gameUi.drawTurn(playerChoice)
-      // check for winner
-      gameEngine.checkForWinner()
-      if (storage.gameObject.over) {
-        return
-      }
-      // call function that filters game array and determine # of remaining spaces
-      if (gameEngine.remainingTurns() === 0) {
-        gameUi.gameProgress('#user-feedback', 'Tie!')
-        return
-      }
-      // switch player turn
-      gameEngine.nextTurn()
-    })
-    .catch(gameUi.updateFailure) // Need a way to prevent turnCounter from being called
 }
 const onSignIn = (event) => {
   event.preventDefault()
@@ -59,18 +56,20 @@ const onSignUp = (event) => {
   const form = event.target
   const formData = getFormFields(form)
 
-  console.log(formData)
-
   api.signUp(formData)
     .then(gameUi.signUpSuccess)
+    // sign in user following successfull sign-up
     .then(() => {
       onSignIn(event)
     })
     .then(() => {
-      // resets form fields
+      // resets form fields, but not before onSignIn runs
       $('#sign-up-form').trigger('reset')
     })
-    .catch(gameUi.signUpFailure)
+    .catch(() => {
+      gameUi.signUpFailure()
+      $('#sign-up-form').trigger('reset')
+    })
 }
 
 const onChangePassword = (event) => {
@@ -105,19 +104,18 @@ const onNewGame = (event) => {
     .then(() => {
       $('.game-space').off('click')
       $('.game-space').on('click', onPlayerChoice)
+      // reset game board ui on success
+      $('.game-space').html('')
     })
-    // likely need to store api return object
     .catch(gameUi.newGameFailure)
-  // reset game board ui on success
-  $('.game-space').html('')
 }
 
 const onGetGames = (event) => {
   event.preventDefault()
 
   api.listGames()
-    .then(gameUi.onGameHistorySuccess)
-    .catch(gameUi.onGameHistoryFailure)
+    .then(gameUi.gameHistorySuccess)
+    .catch(gameUi.gameHistoryFailure)
 }
 
 const addHandlers = () => {

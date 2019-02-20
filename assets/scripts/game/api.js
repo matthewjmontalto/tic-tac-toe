@@ -61,10 +61,10 @@ const updateGame = (gameData) => {
     data: {
       game: {
         cell: {
-          index: storage.gameObject.playerChoice,
+          index: gameData,
           value: storage.gameObject.currentPlayer
         },
-        over: storage.gameObject.game.over
+        over: storage.gameObject.over
       }
     }
   })

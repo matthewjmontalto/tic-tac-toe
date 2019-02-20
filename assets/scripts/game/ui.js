@@ -36,7 +36,6 @@ const signInSuccess = (responseData) => {
   gameProgress('#user-feedback', 'Press "New Game" to begin')
   $('.game-space').html('')
   storage.user = responseData.user
-  console.log(storage.user)
 }
 
 const signInFailure = () => {
@@ -45,10 +44,12 @@ const signInFailure = () => {
 
 const changePasswordSuccess = () => {
   $('#change-status').text('Password updated.')
+  setTimeout(() => $('#change-status').text(''), 5000)
 }
 
 const changePasswordFailure = () => {
   $('#change-status').text('Unable to update password.')
+  setTimeout(() => $('#change-status').text(''), 5000)
 }
 
 const signOutSuccess = () => {
@@ -69,7 +70,6 @@ const newGameSuccess = (responseData) => {
   storage.gameObject.game = responseData.game.cells
   storage.gameObject.id = responseData.game.id
   storage.gameObject.over = responseData.game.over
-  console.log('new game is ', storage.gameObject.over)
   gameProgress('#user-feedback', 'X goes first.')
 }
 
@@ -77,12 +77,13 @@ const newGameFailure = (responseData) => {
   gameProgress('#user-feedback', 'Failed to start new game. Try again')
 }
 
-const onGameHistorySuccess = (responseData) => {
+const gameHistorySuccess = (responseData) => {
   const gamesList = responseData.games
-  console.log(gamesList)
-  $('#user-feedback').text(`Total games played to date: ${gamesList.length}`)
+  $('#user-feedback').text(`Total games won to date: ${gamesList.length}`)
+}
 
-  setTimeout(() => $('#user-feedback').text(''), 5000)
+const gameHistoryFailure = () => {
+  $('#user-feedback').text(`Failed to retrieve games.`)
 }
 
 module.exports = {
@@ -100,5 +101,7 @@ module.exports = {
   signOutFailure: signOutFailure,
   newGameSuccess: newGameSuccess,
   newGameFailure: newGameFailure,
-  onGameHistorySuccess: onGameHistorySuccess
+  gameHistorySuccess: gameHistorySuccess,
+  gameHistoryFailure: gameHistoryFailure
+
 }

@@ -2,6 +2,7 @@
 
 const storage = require('../store.js')
 const ui = require('./ui.js')
+const api = require('./api.js')
 
 // Refactoring
 
@@ -29,9 +30,9 @@ const remainingTurns = () => {
 
   return emptySpaces.length
 }
+// stores array returned from game PATCH
 const gameProgress = (responseData) => {
   storage.gameObject.game = responseData.game.cells
-  console.log(responseData.game.cells)
 }
 // check for winner
 const checkForWinner = () => {
@@ -42,7 +43,13 @@ const checkForWinner = () => {
   ) {
     // pass true to newGame object over
     storage.gameObject.over = true
-    ui.gameProgress('#user-feedback', `${player} is the winner!`)
+    api.updateGame()
+      .then(() => {
+        ui.gameProgress('#user-feedback', `${player} is the winner!`)
+      })
+      .catch(() => {
+        ui.gameProgress('#user-feedback', 'Unable to update win outcome')
+      })
     // turn off event listener
     ui.removeListener('.game-space')
   } else if (
@@ -50,49 +57,91 @@ const checkForWinner = () => {
     (storage.gameObject.game[3] === 'O' && storage.gameObject.game[4] === 'O' && storage.gameObject.game[5] === 'O')
   ) {
     storage.gameObject.over = true
-    ui.gameProgress('#user-feedback', `${player} is the winner!`)
+    api.updateGame()
+      .then(() => {
+        ui.gameProgress('#user-feedback', `${player} is the winner!`)
+      })
+      .catch(() => {
+        ui.gameProgress('#user-feedback', 'Unable to update win outcome')
+      })
     ui.removeListener('.game-space')
   } else if (
     (storage.gameObject.game[6] === 'X' && storage.gameObject.game[7] === 'X' && storage.gameObject.game[8] === 'X') ||
     (storage.gameObject.game[6] === 'O' && storage.gameObject.game[7] === 'O' && storage.gameObject.game[8] === 'O')
   ) {
     storage.gameObject.over = true
-    ui.gameProgress('#user-feedback', `${player} is the winner!`)
+    api.updateGame()
+      .then(() => {
+        ui.gameProgress('#user-feedback', `${player} is the winner!`)
+      })
+      .catch(() => {
+        ui.gameProgress('#user-feedback', 'Unable to update win outcome')
+      })
     ui.removeListener('.game-space')
   } else if (
     (storage.gameObject.game[0] === 'X' && storage.gameObject.game[3] === 'X' && storage.gameObject.game[6] === 'X') ||
     (storage.gameObject.game[0] === 'O' && storage.gameObject.game[3] === 'O' && storage.gameObject.game[6] === 'O')
   ) {
     storage.gameObject.over = true
-    ui.gameProgress('#user-feedback', `${player} is the winner!`)
+    api.updateGame()
+      .then(() => {
+        ui.gameProgress('#user-feedback', `${player} is the winner!`)
+      })
+      .catch(() => {
+        ui.gameProgress('#user-feedback', 'Unable to update win outcome')
+      })
     ui.removeListener('.game-space')
   } else if (
     (storage.gameObject.game[1] === 'X' && storage.gameObject.game[4] === 'X' && storage.gameObject.game[7] === 'X') ||
     (storage.gameObject.game[1] === 'O' && storage.gameObject.game[4] === 'O' && storage.gameObject.game[7] === 'O')
   ) {
     storage.gameObject.over = true
-    ui.gameProgress('#user-feedback', `${player} is the winner!`)
+    api.updateGame()
+      .then(() => {
+        ui.gameProgress('#user-feedback', `${player} is the winner!`)
+      })
+      .catch(() => {
+        ui.gameProgress('#user-feedback', 'Unable to update win outcome')
+      })
     ui.removeListener('.game-space')
   } else if (
     (storage.gameObject.game[2] === 'X' && storage.gameObject.game[5] === 'X' && storage.gameObject.game[8] === 'X') ||
     (storage.gameObject.game[2] === 'O' && storage.gameObject.game[5] === 'O' && storage.gameObject.game[8] === 'O')
   ) {
     storage.gameObject.over = true
-    ui.gameProgress('#user-feedback', `${player} is the winner!`)
+    api.updateGame()
+      .then(() => {
+        ui.gameProgress('#user-feedback', `${player} is the winner!`)
+      })
+      .catch(() => {
+        ui.gameProgress('#user-feedback', 'Unable to update win outcome')
+      })
     ui.removeListener('.game-space')
   } else if (
     (storage.gameObject.game[0] === 'X' && storage.gameObject.game[4] === 'X' && storage.gameObject.game[8] === 'X') ||
     (storage.gameObject.game[0] === 'O' && storage.gameObject.game[4] === 'O' && storage.gameObject.game[8] === 'O')
   ) {
     storage.gameObject.over = true
-    ui.gameProgress('#user-feedback', `${player} is the winner!`)
+    api.updateGame()
+      .then(() => {
+        ui.gameProgress('#user-feedback', `${player} is the winner!`)
+      })
+      .catch(() => {
+        ui.gameProgress('#user-feedback', 'Unable to update win outcome')
+      })
     ui.removeListener('.game-space')
   } else if (
     (storage.gameObject.game[2] === 'X' && storage.gameObject.game[4] === 'X' && storage.gameObject.game[6] === 'X') ||
     (storage.gameObject.game[2] === 'O' && storage.gameObject.game[4] === 'O' && storage.gameObject.game[6] === 'O')
   ) {
     storage.gameObject.over = true
-    ui.gameProgress('#user-feedback', `${player} is the winner!`)
+    api.updateGame()
+      .then(() => {
+        ui.gameProgress('#user-feedback', `${player} is the winner!`)
+      })
+      .catch(() => {
+        ui.gameProgress('#user-feedback', 'Unable to update win outcome')
+      })
     ui.removeListener('.game-space')
   } else {
   }
